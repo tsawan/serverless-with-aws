@@ -1,11 +1,16 @@
-module.exports.handler = (event, ctx, done) => {
-    console.log(`customer is ${event.pathParameters.customer}`);
-    done(null, {
-        statusCode: 200,
-        body: JSON.stringify({
-            data: {
-                id: 1, name: '1 clean up', status: 'open'
-            }
-        })
-    })
-}
+const express = require('express');
+const http = require('serverless-http');
+const todos = [
+    { id: 1, name: 'clean up', status: 'open' },
+    { id: 1, name: 'cook', status: 'done' }
+]
+
+const app = express();
+app.get('/', (req, res) => {
+    res.json({ message: 'ok' })
+})
+app.get('/todos', (req, res) => {
+    res.json({ data: JSON.stringify(todos) })
+})
+
+module.exports.handler = http(app);
